@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <title>The Amazing Race — יום הולדת אריאל!</title>
+  <meta name="description" content="מירוץ יום ההולדת של אריאל – The Amazing Race Edition" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Heebo:wght@400;600;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- Floating balloons -->
+  <div id="balloon-container" aria-hidden="true"></div>
+
+  <!-- ══════════ FIXED TOPBAR ══════════ -->
+  <nav class="topbar" id="topbar" aria-label="ניווט מהיר">
+    <div class="topbar-inner">
+      <button class="tb-btn tb-btn--gifts" id="tb-log" type="button" aria-label="המתנות שלי">
+        <span class="tb-icon" aria-hidden="true">🎁</span>
+        <span class="tb-label">המתנות שלי</span>
+        <span class="tb-badge" id="gifts-badge" aria-hidden="true"></span>
+      </button>
+      <div class="tb-divider" aria-hidden="true"></div>
+      <button class="tb-btn tb-btn--race" id="tb-race" type="button" aria-label="מוכנים לצאת למירוץ?">
+        <span class="tb-icon" aria-hidden="true">🏁</span>
+        <span class="tb-label">מוכנים לצאת?</span>
+      </button>
+      <div class="tb-divider" aria-hidden="true"></div>
+      <button class="tb-btn tb-btn--balloons" id="tb-balloons" type="button" aria-label="מסיבת בלונים">
+        <span class="tb-icon" aria-hidden="true">🎈</span>
+        <span class="tb-label">מסיבת בלונים</span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- ══════════ ADVENTURE LOG DRAWER ══════════ -->
+  <div class="adventure-log" id="adventure-log" aria-hidden="true" role="dialog" aria-label="יומן מסע">
+    <div class="al-backdrop" id="al-backdrop"></div>
+    <aside class="al-panel" id="al-panel">
+      <div class="al-header">
+        <h3 class="al-title">🎁 המתנות שלי</h3>
+        <button class="al-close" id="al-close" type="button" aria-label="סגור">✕</button>
+      </div>
+      <div class="al-content" id="al-content">
+        <!-- Populated by JS -->
+      </div>
+    </aside>
+  </div>
+
+  <!-- ══════════ RACE HEADER ══════════ -->
+  <header class="race-header" id="race-header">
+    <div class="rh-inner">
+      <span class="rh-tag" aria-hidden="true">★ BIRTHDAY RACE ★</span>
+      <h1 class="rh-title" id="rh-title">THE AMAZING RACE</h1>
+      <h2  class="rh-sub">יום הולדת אריאל 🎂</h2>
+    </div>
+  </header>
+
+  <!-- ══════════ PROGRESS MAP ══════════ -->
+  <div class="pm-wrap" id="pm-wrap">
+    <nav class="progress-map" id="progress-map" aria-label="מפת התקדמות המשימות">
+      <!-- Populated by JS -->
+    </nav>
+  </div>
+
+  <!-- ══════════ TIMER SECTION ══════════ -->
+  <section class="timer-section" id="timer-section" aria-label="כמה זמן אריאל בעולם">
+    <div class="ts-inner">
+      <p class="ts-tagline">⏱&nbsp; איפה היית 26 שנה?!</p>
+      <h2 class="ts-title">כמה זמן העולם מחייך בגלל שנולדת...</h2>
+      <div class="timer-display" role="timer" aria-live="off">
+        <div class="timer-unit">
+          <div class="timer-num" id="t-years">00</div>
+          <div class="timer-lbl">שנים</div>
+        </div>
+        <div class="timer-sep" aria-hidden="true">:</div>
+        <div class="timer-unit">
+          <div class="timer-num" id="t-days">000</div>
+          <div class="timer-lbl">ימים</div>
+        </div>
+        <div class="timer-sep" aria-hidden="true">:</div>
+        <div class="timer-unit">
+          <div class="timer-num" id="t-hours">00</div>
+          <div class="timer-lbl">שעות</div>
+        </div>
+        <div class="timer-sep" aria-hidden="true">:</div>
+        <div class="timer-unit">
+          <div class="timer-num" id="t-minutes">00</div>
+          <div class="timer-lbl">דקות</div>
+        </div>
+        <div class="timer-sep" aria-hidden="true">:</div>
+        <div class="timer-unit">
+          <div class="timer-num" id="t-seconds">00</div>
+          <div class="timer-lbl">שניות</div>
+        </div>
+      </div>
+      <div class="timer-live" aria-hidden="true">
+        <span class="live-dot"></span>
+        <span>LIVE</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════════ PHOTO FILM STRIP ══════════ -->
+  <section class="film-strip-section" id="film-strip-section" aria-label="גלריית תמונות">
+    <p class="fs-label" aria-hidden="true">◈ &nbsp; OUR STORY &nbsp; ◈</p>
+    <div class="film-strip" id="film-strip" role="list" aria-label="תמונות שלנו">
+      <!-- Populated by JS -->
+    </div>
+  </section>
+
+  <!-- ══════════ MISSION FEED ══════════ -->
+  <main class="mission-feed" id="mission-feed" aria-live="polite">
+    <!-- Populated by JS -->
+  </main>
+
+  <!-- ══════════ WIN STATE ══════════ -->
+  <section class="win-section" id="win-section" hidden>
+    <div class="win-card">
+      <div class="win-trophy" aria-hidden="true">🏆</div>
+      <h2 class="win-title">YOU WIN THE RACE!</h2>
+      <p class="win-msg">ניצחת! השלמת את כל משימות מרוץ יום ההולדת! כל הכבוד אריאל! 🎉</p>
+      <button class="win-btn" id="win-celebrate-btn" type="button">חגוג שוב! 🎊</button>
+      <button class="win-reset-btn" id="win-reset-btn" type="button">התחל מחדש ↺</button>
+    </div>
+  </section>
+
+  <!-- ══════════ LOVE-METER (fixed bottom) ══════════ -->
+  <div class="love-meter" id="love-meter" aria-label="מדד האהבה">
+    <div class="lm-inner">
+      <span class="lm-label">מדד האהבה שלי אליך</span>
+      <div class="lm-track"
+           role="progressbar"
+           aria-valuemin="0"
+           aria-valuemax="100"
+           aria-valuenow="0"
+           id="lm-track">
+        <div class="lm-fill" id="lm-fill"></div>
+      </div>
+      <span class="lm-pct" id="lm-pct">0%</span>
+      <span class="lm-heart" id="lm-heart" aria-hidden="true">🤍</span>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"
+          onerror="window.confetti=null"></script>
+  <script src="script.js"></script>
+</body>
+</html>
