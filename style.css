@@ -291,6 +291,7 @@ body.body-noscroll { overflow: hidden; }
 .rh-tag   { display: block; font-size: 0.62rem; font-weight: 700; letter-spacing: 5px; color: var(--yellow); opacity: 0.72; margin-bottom: 1px; }
 .rh-title { font-family: var(--font-display); font-size: clamp(2rem, 9vw, 3.6rem); color: var(--yellow); letter-spacing: 4px; line-height: 1; display: inline-block; transform: skewX(-4deg); text-shadow: 0 0 28px rgba(255,204,0,0.32); cursor: default; user-select: none; }
 .rh-sub   { font-family: var(--font-display); font-size: clamp(1.3rem, 4.5vw, 2.4rem); font-weight: 900; color: rgba(255,255,255,0.92); margin-top: 4px; letter-spacing: 3px; text-shadow: 0 0 18px rgba(255,255,255,0.12); }
+.rh-date  { display: block; font-family: var(--font-mono); font-size: 0.68rem; color: rgba(255,204,0,0.38); letter-spacing: 4px; margin-top: 6px; }
 
 /* ══════════════════════════════════
    PROGRESS MAP  (sticky — below topbar only)
