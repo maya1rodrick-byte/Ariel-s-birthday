@@ -95,7 +95,7 @@ const MISSIONS = [
 קדימה, המצבר צריך להיטען! ☕`,
   },
   {
-    id: 2, icon: '🦆', title: 'אגם בעיר היין', type: 'standard', btnText: 'ביצעתי! ✓',
+    id: 2, icon: '🦆', title: 'אגם בעיר היין', type: 'password', password: 'פארק האגם', btnText: 'המשך לתחנה הבאה ✓',
     revealOnComplete: {
       icon: '🧺',
       name: 'נכון! הולכים לפיקניק',
@@ -120,7 +120,7 @@ const MISSIONS = [
 ברגע שתקיש אותו, המסך יפתח! 🔓`,
   },
   {
-    id: 4, icon: '🗺️', title: 'הכתובת הסודית', type: 'standard', btnText: 'ביצעתי! ✓',
+    id: 4, icon: '🗺️', title: 'הכתובת הסודית', type: 'password', password: 'מקווה ישראל 3', btnText: 'המשך לתחנה הבאה ✓',
     revealOnComplete: {
       icon: '☕',
       name: 'Coffee Organization',
@@ -133,12 +133,12 @@ const MISSIONS = [
 2️⃣  איך קוראים ליעקוב אבינו?
 3️⃣  מספר האחים שלך?
 
-שם מחכה לך משהו מיוחד שקשור לתחביבים שלך.
+כדי לחשוף את היעד הסודי, הזן את הקוד המתאים.
 נחש לאן הולכים?`,
   },
   {
     // ← formerly Mission 6 (swapped)
-    id: 5, icon: '🌶️', title: 'מרכז הטעמים', type: 'standard', btnText: 'הגעתי! ✓',
+    id: 5, icon: '🌶️', title: 'מרכז הטעמים', type: 'password', password: 'לוינסקי', btnText: 'המשך לתחנה הבאה ✓',
     mapImage: 'assets/levinski.jpg map.jpg',
     revealOnComplete: {
       icon: '🗺️',
@@ -150,8 +150,8 @@ const MISSIONS = [
 
 אנחנו הולכים למקום שבו התבלינים הם הגיבורים. בין סמטאות של טעמים, בורקסים וריחות של פעם, נמצא את המקום שנותן לחיים את כל הטעם.
 
-זהו המרכז של הקולינריה הישנה והחדשה.
-בדקו את המפה הטקטית! 🌿🥙`,
+כדי לחשוף את היעד הסודי, הזן את הקוד שנוגע לשוק: זה מתחבר לשם השוק עצמו.
+נוסעים לשוק? 🌿🥙`,
   },
   {
     // ← formerly Mission 5 (swapped)
@@ -222,7 +222,7 @@ function updateGiftBadge() {
 /* ══════════════════════════════════════════════════════════
    STATE
 ══════════════════════════════════════════════════════════ */
-let state = { current: 1, completed: [], m3Unlocked: false, balloonPops: 0, giftsOpened: [] };
+let state = { current: 1, completed: [], m3Unlocked: false, passwordsUnlocked: {}, balloonPops: 0, giftsOpened: [] };
 
 function saveState() {
   try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (_) { }
@@ -230,7 +230,12 @@ function saveState() {
 function loadState() {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) state = { ...state, ...JSON.parse(raw) };
+    if (raw) {
+      state = { ...state, ...JSON.parse(raw) };
+      if (state.m3Unlocked && !state.passwordsUnlocked?.[3]) {
+        state.passwordsUnlocked = { ...state.passwordsUnlocked, 3: true };
+      }
+    }
   } catch (_) { localStorage.removeItem(STORAGE_KEY); }
 }
 function resetState() {
@@ -706,27 +711,24 @@ function buildActiveCard(m, animate) {
 
   let body = '';
   if (m.type === 'password') {
-    if (state.m3Unlocked) {
-      body = `
-        <p class="mc-content">${m.text}</p>
-        <div class="m3-success-zone visible" id="m3-success-${m.id}">${buildM3SuccessHTML()}</div>
-        <button class="mc-complete-btn" id="mc-btn-${m.id}" type="button">${m.btnText}</button>`;
-    } else {
-      body = `
-        <p class="mc-content">${m.text}</p>
-        <div class="mc-pw-zone" id="pw-zone-${m.id}">
-          <p class="mc-pw-label">🔑 הזן את הקוד הסודי:</p>
-          <div class="mc-pw-row">
-            <input type="text" class="mc-pw-input" id="pw-input-${m.id}"
-                   placeholder="הקוד הסודי..."
-                   autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
-                   aria-label="שדה קוד סודי" />
-            <button class="mc-pw-submit" id="pw-submit-${m.id}" type="button">פתח 🔑</button>
-          </div>
-          <div class="mc-pw-error-msg" id="pw-error-${m.id}" role="alert">❌ קוד שגוי — נסה שוב!</div>
+    const unlocked = state.passwordsUnlocked?.[m.id] === true;
+    const successHTML = m.id === 3 ? buildM3SuccessHTML() : '';
+    const successClass = unlocked ? ' visible' : '';
+    body = `
+      <p class="mc-content">${m.text}</p>
+      <div class="mc-pw-zone" id="pw-zone-${m.id}">
+        <p class="mc-pw-label">🔑 הזן את הקוד הסודי:</p>
+        <div class="mc-pw-row">
+          <input type="text" class="mc-pw-input" id="pw-input-${m.id}"
+                 placeholder="הקוד הסודי..."
+                 autocomplete="off" autocorrect="off" autocapitalize="none" spellcheck="false"
+                 aria-label="שדה קוד סודי" />
+          <button class="mc-pw-submit" id="pw-submit-${m.id}" type="button">פתח 🔑</button>
         </div>
-        <div class="m3-success-zone" id="m3-success-${m.id}">${buildM3SuccessHTML()}</div>`;
-    }
+        <div class="mc-pw-error-msg" id="pw-error-${m.id}" role="alert">❌ קוד שגוי — נסה שוב!</div>
+      </div>
+      ${m.id === 3 ? `<div class="m3-success-zone${successClass}" id="m3-success-${m.id}">${successHTML}</div>` : ''}
+      ${unlocked ? `<button class="mc-complete-btn" id="mc-btn-${m.id}" type="button">${m.btnText}</button>` : ''}`;
   } else if (m.type === 'family') {
     body = `
       <p class="mc-content">${m.text}</p>
@@ -877,7 +879,9 @@ function validatePassword(missionId) {
   if (input.value.trim() === mission.password) {
     input.classList.remove('pw-error'); input.classList.add('pw-success');
     errorEl?.classList.remove('visible');
-    state.m3Unlocked = true; saveState();
+    state.passwordsUnlocked = state.passwordsUnlocked || {};
+    state.passwordsUnlocked[missionId] = true;
+    saveState();
     if (successEl) { successEl.classList.add('visible'); setTimeout(() => scrollToEl(successEl), 250); }
     if (body && !document.getElementById(`mc-btn-${missionId}`)) {
       const btn = document.createElement('button');
@@ -885,6 +889,9 @@ function validatePassword(missionId) {
       btn.id = `mc-btn-${missionId}`; btn.type = 'button'; btn.textContent = mission.btnText;
       btn.addEventListener('click', () => completeMission(missionId));
       body.appendChild(btn);
+      if (mission.revealOnComplete) {
+        handleRevealStep(missionId);
+      }
     }
     fireBurst(0.5, 0.6, false);
   } else {
